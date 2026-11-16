@@ -61,41 +61,38 @@ class Usuario{
         boolean cadastrado = false;
 
         public void fazerLogin(){
-            if(cadastrado == true){ 
-            try{
-                String usuario1;
-                String senha1;
-                Scanner sc = new Scanner(System.in);
-                System.out.print("Digite o usuário: ");
-                usuario1 = sc.nextLine();
-                System.out.print("Digite a senha: ");
-                senha1 = sc.nextLine();
+    if(cadastrado == true){
 
-                if(!usuario1.equals(usuarioCadastrado) || !senha1.equals(senhaCadastrada)){
-                    for (login = 2; login > 0; login--){
-                        System.out.println("Erro, numero de tentativas restantes: " + login);
-                        System.out.print("Digite o usuário: ");
-                        usuario1 = sc.nextLine();
-                        System.out.print("Digite a senha: ");
-                        senha1 = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
 
-                        if(usuario1.equals(usuarioCadastrado) && senha1.equals(senhaCadastrada)){
-                            System.out.println("Bem vindo de volta "+usuarioCadastrado+"!");
-                            logado = true;
-                            break;
-                        }
-                    }
-                }else{
-                    System.out.println("Bem vindo de volta "+usuarioCadastrado+"!");
-                    logado = true;
-                }
-            }catch(InputMismatchException e) {
-                System.out.println("Erro de digitação.");
+        for(int login = 3; login > 0; login--){
+
+            System.out.print("Digite o usuário: ");
+            String usuario1 = sc.nextLine();
+
+            System.out.print("Digite a senha: ");
+            String senha1 = sc.nextLine();
+
+            if(usuario1.equals(usuarioCadastrado) &&
+               senha1.equals(senhaCadastrada)){
+
+                System.out.println("Bem vindo de volta " + usuarioCadastrado + "!");
+                logado = true;
+                return;
+
+            }else{
+                System.out.println("Dados incorretos.");
+                System.out.println("Tentativas restantes: " + (login - 1));
             }
-        }else{
-            System.out.println("Erro, sem cadastro");
         }
+
+        System.out.println("Número máximo de tentativas atingido.");
+        System.exit(0);
+
+    }else{
+        System.out.println("Erro, sem cadastro");
     }
+}
 }
 class Cadastro{
     public void fazerCadastro(Usuario user){
@@ -114,6 +111,13 @@ class Cadastro{
 }
 
 class Impressora{
+    int tipo = 1;
+    String modelo = "i9";
+    String conexao = "USB";
+    int parametro = 0;
+
+    boolean conexaoAberta = false;
+
     public void ImpressoraOpcoes(Usuario user){
         Scanner sc = new Scanner(System.in);
         int opcaoImpressora;
@@ -139,6 +143,7 @@ class Impressora{
                 case 1:
                     break;
                 case 2:
+                    AbrirConexao();
                     break;
                 case 3:
                     break;
@@ -169,5 +174,24 @@ class Impressora{
         }else{
             System.out.println("Erro, login não efetuado.");
         }
+    }
+
+    public void AbrirConexao(){
+        try{
+            int retorno = ImpressoraDLL.INSTANCE.AbreConexaoImpressora(
+                tipo,modelo,conexao,parametro
+            );
+            if(retorno == 0){
+                conexaoAberta = true;
+                System.out.println("Conexao Aberta com Sucesso!");
+            }
+            else{
+                conexaoAberta = false;
+                System.out.println("Perda na Conexao:"+retorno);
+            }
+        }
+         catch(UnsatisfiedLinkError e){
+                System.out.println("Erro a carregar o DLL"+ e.getMessage());
+            }
     }
 }
