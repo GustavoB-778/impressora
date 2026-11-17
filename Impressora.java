@@ -1,5 +1,12 @@
 import java.util.Scanner;
 public class Impressora{
+
+    private int tipo = 1;
+    private String modelo = "i9";
+    private String conexao = "USB";
+    private int parametro = 0;
+
+    private boolean conexaoAberta = false;
     public void ImpressoraOpcoes(Usuario user){
         Scanner sc = new Scanner(System.in);
         int opcaoImpressora;
