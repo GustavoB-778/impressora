@@ -90,6 +90,7 @@ public class Impressora{
                 case 11:
                     extras();
                 System.out.println("Ainda nao implementado.");
+                break;
 
                 case 12:
                     System.out.println("");
@@ -192,7 +193,7 @@ public class Impressora{
         if (!conexaoEstaAberta()) {
             return;
         }
-        System.out.println("Os dados nã podem estar vazios");
+        System.out.println("Os dados do codigo de barras");
         String dados = sc.nextLine();
 
         if(dados.trim().isEmpty()){
