@@ -34,8 +34,13 @@ public class Menu {
                     user.fazerLogin();
                     break;
                 case 3:
+                   if(user.logado) {
                     imp.ImpressoraOpcoes(user);
-                    break;
+                   }
+                   else{
+                    System.out.println("Faça o login antes de acessar a impressora.");
+                   }
+                   break;
                 case 4:
                     System.out.println("");
                     System.out.println("Saindo do programa...");
