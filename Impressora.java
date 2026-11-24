@@ -1,8 +1,8 @@
-import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Scanner;
 public class Impressora{
 
      int tipo = 1;
@@ -192,9 +192,9 @@ public class Impressora{
             );
     
             if (resultado == 0) {
-                System.out.println("Erro ao imprimir texto. Codigo: " + resultado);
+               System.out.println("Texto enviado para a impressora com sucesso!");
             } else {
-                System.out.println("Texto enviado para a impressora com sucesso!");
+                 System.out.println("Erro ao imprimir texto. Codigo: " + resultado);
             }
     
         } catch (UnsatisfiedLinkError e) {
