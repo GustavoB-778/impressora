@@ -175,32 +175,44 @@ public class Impressora{
         }
     }
 
-    public void imprimirTexto(){
-        if (!conexaoEstaAberta()) {
-            return;
-        }
-        System.out.println("Digite o texto que deseja imprimir");
-        String texto = sc.nextLine();
-
-        if (texto.trim().isEmpty()) {
-            System.out.println("O texto não pode estar vazio");
-            return;
-        }
-        try {
-            int resultado = ImpressoraDLL.INSTANCE.ImpressaoTexto(
-                texto, 0, 0, 0
-            );
-    
-            if (resultado == 0) {
-               System.out.println("Texto enviado para a impressora com sucesso!");
-            } else {
-                 System.out.println("Erro ao imprimir texto. Codigo: " + resultado);
-            }
-    
-        } catch (UnsatisfiedLinkError e) {
-            System.out.println("Erro ao carregar a DLL da impressora.");
-        }
+   
+public void imprimirTexto() {
+    if (!conexaoEstaAberta()) {
+        return;
     }
+
+    System.out.println("Digite o texto que deseja imprimir");
+    String texto = sc.nextLine();
+
+    if (texto.trim().isEmpty()) {
+        System.out.println("O texto não pode estar vazio");
+        return;
+    }
+
+    try {
+        int resultado = ImpressoraDLL.INSTANCE.ImpressaoTexto(
+            texto, 0, 0, 0
+        );
+
+        if (resultado < 0) {
+            System.out.println("Erro ao imprimir texto. Codigo: " + resultado);
+        } else {
+            System.out.println("Texto enviado para a impressora!");
+
+            int avanco = ImpressoraDLL.INSTANCE.AvancaPapel(1);
+
+            if (avanco == 0) {
+                ImpressoraDLL.INSTANCE.Corte(5);
+                System.out.println("Papel avançado com sucesso!");
+            } else {
+                System.out.println("Erro ao avançar papel. Codigo: " + avanco);
+            }
+        }
+
+    } catch (UnsatisfiedLinkError e) {
+        System.out.println("Erro ao carregar a DLL da impressora.");
+    }
+}
 
     public void imprimirQRCode(){
         if (!conexaoEstaAberta()) {
@@ -219,6 +231,7 @@ public class Impressora{
             );
     
             if (resultado == 0) {
+                ImpressoraDLL.INSTANCE.Corte(5);
                 System.out.println("QR Code impresso com sucesso!");
             } else {
                 System.out.println("Erro ao imprimir QR Code. Codigo: " + resultado);
@@ -249,6 +262,7 @@ public class Impressora{
             );
     
             if (resultado == 0) {
+                ImpressoraDLL.INSTANCE.Corte(5);
                 System.out.println("Codigo de barras impresso com sucesso!");
             } else {
                 System.out.println("Erro ao imprimir codigo de barras. Codigo: " + resultado);
@@ -281,6 +295,7 @@ public class Impressora{
             );
     
             if (resultado == 0) {
+                ImpressoraDLL.INSTANCE.Corte(5);
                 System.out.println("XML SAT impresso com sucesso!");
             } else {
                 System.out.println("Erro ao imprimir XML SAT. Codigo: " + resultado);
@@ -323,6 +338,7 @@ public class Impressora{
         );
 
         if (resultado == 0) {
+            ImpressoraDLL.INSTANCE.Corte(5);
             System.out.println("XML de cancelamento impresso com sucesso!");
         } else {
             System.out.println("Erro ao imprimir XML de cancelamento. Codigo: " + resultado);
